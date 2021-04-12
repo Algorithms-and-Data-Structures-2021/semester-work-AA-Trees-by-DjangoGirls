@@ -1,27 +1,22 @@
 #pragma once
-
+#include "node.hpp"
 // Заголовочный файл с объявлением структуры данных
 
-namespace itis {
+namespace itis
+{
 
-  // Tip 1: объявите здесь необходимые структуры, функции, константы и прочее
-
-  // Пример: объявление константы времени компиляции в заголовочном файле
-  inline constexpr auto kStringConstant = "Hello, stranger!";
-
-  // Пример: объявление структуры с полями и методами
-  struct MyStructure {
+  struct AATree
+  {
    public:
-    int size_{0};
-    int capacity_{0};
-    int* data_{nullptr};
+    Node *root;
 
-    // Tip 2: На начальном этапе разработки структуры данных можете определения методов задавать в
-    // заголовочном файле, как только работа будет завершена, можно будет оставить здесь только объявления.
 
-    int size() const {
-      return size_;
-    }
+    AATree();
+    explicit AATree(Node *x);
+    Node *search(int x);
+    void insert(int x);
+    void remove(int x);
+    ~AATree();
   };
 
-}  // namespace itis
+}
