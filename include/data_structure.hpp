@@ -14,7 +14,8 @@ namespace itis
 
     AATree();
     explicit AATree(Node *x);
-    Node *search(int x);
+    bool research(Node *root, int x);
+    bool search(int x);
     void insert(int x);
     void remove(int x);
     Node *skew(Node *x);

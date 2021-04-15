@@ -25,31 +25,39 @@ namespace itis {
     this->max_lvl_ = 0;
   }
 
+  bool AATree::research(Node *root_pointer, int x) {
+    bool found = false;
+    int rval;
+    Node* temp = root_pointer;
+    while(!found){
+      rval = temp->data;
+      if(x < rval){
+        if(temp->left_child != 0){
+          temp = temp->left_child;
+        }else{
+          break;
+        }
 
-  Node *AATree::search(int x) {
-    // все хуйня, надо переделать метод
-    Node *ret = nullptr;
-    Node *curr = this->root;
-    Node *prev = nullptr;
-    while (curr != nullptr)
-    {
-      prev = curr;
-      if (x < curr->data)
-      {
-        curr = curr->left_child;
-      } else if (x > curr->data)
-      {
-        curr = curr->right_child;
-      } else
-      {
-        ret = curr;
-        break;
+      }else if(x > rval){
+        if(temp->right_child != 0){
+          temp = temp->right_child;
+        }else{
+          break;
+        }
+
+      }else{
+        found = true;
       }
     }
-  auto *chto_to = new Node(5);
-    return chto_to;
+    return found;
   }
 
+  bool AATree::search(int x) {
+    if(research(root, x)){
+      return true;
+    }
+    return false;
+  }
 
   void AATree::insert(int x)  // вставка как в обычном бинарном
   // все хуйня, надо переделать метод
