@@ -1,28 +1,26 @@
 #include <iostream>
 #include "data_structure.hpp"
 
-namespace itis {
+namespace itis
+{
 
 
   AATree::AATree()
   {
     this->root = nullptr;
-    this->size_ = 0;
-    this->max_lvl_ = 0;
+
   }
 
   AATree::AATree(Node *tree_root)
   {
     this->root = tree_root;
-    this->size_ = 1;
-    this->max_lvl_ = 1;
+
   }
 
   AATree::~AATree()
   {
     this->root = nullptr;
-    this->size_ = 0;
-    this->max_lvl_ = 0;
+
   }
 
   bool AATree::research(Node *root_pointer, int x) {
@@ -59,86 +57,16 @@ namespace itis {
     return false;
   }
 
-  void AATree::insert(int x)  // вставка как в обычном бинарном
-  // все хуйня, надо переделать метод
-  {
-    if (root == nullptr)
-    {
-      root = new Node(x);
-      return;
-    }
-    Node *curr = this->root;
-    while (curr != nullptr)
-    {
-      if (x < curr->data)
-      {
-        if (curr->left_child == nullptr)
-        {
-          Node *new_node = new Node(x);
-          curr->left_child = new_node;
-          this->root = new_node;
-          return;
-        } else
-        {
-          curr = curr->left_child;
-        }
-      } else if (x >= curr->data)
-      {
-        if (curr->right_child == nullptr)
-        {
-          Node *new_node = new Node(x);
-          curr->right_child = new_node;
-          this->root = new_node;
-          return;
-        } else
-        {
-          curr = curr->right_child;
-        }
-      }
-    }
-  }
-
-  void AATree::remove(int x)
-  // удаление элемента как в бинарном, создание из него дерева, если необходимо и
-  // приделать как правую вершину к изначальному дереву
-  // все хуйня, надо переделать метод
-  {
-    Node *del = search(x);
-    if (del == nullptr)
-    {
-      return;
-    }
-    Node *L = del->left_child;
-    if (L == nullptr)
-    {
-      root = del->right_child;
-      delete del;
-      return;
-    }
-    while (L->right_child != nullptr)
-    {
-      L = L->right_child;
-    }
-    if (del->right_child != nullptr)
-    {
-      L->right_child = del->right_child;
-    }
-    root = del->left_child;
-    delete del;
-  }
-
-  // теперь нужно написать функцию, которая обрабатывает все варианты расположения вершин в АА дереве
-  // и засунуть их в те что выше
   Node *AATree::skew(Node *x) {
-  if (x->left_child == nullptr) {
+    if (x->left_child == nullptr) {
+      return x;
+    }  if (x->left_child->lvl == x->lvl) {
+      Node *y = x->left_child;
+      x->left_child = y->right_child;
+      y->right_child = x;
+      return y;
+    }
     return x;
-  }  if (x->left_child->lvl == x->lvl) {
-    Node *y = x->left_child;
-    x->left_child = y->right_child;
-    y->right_child = x;
-    return y;
-  }
-  return x;
 
   }
 
@@ -157,4 +85,134 @@ namespace itis {
     return x;
   }
 
-}
+
+  bool isEmpty(Node * n){
+    return n->data == 0;
+  }
+
+  void AATree::insert(int x)
+  {
+    if(!research(root, x))
+    {
+      root = insert(x, root);
+      return;
+    }
+  }
+
+  Node* AATree::insert(int x, Node * V){
+    if(isEmpty(V))
+    {
+      V = new Node(x);
+    }
+    else if(x < V->data){
+      if(V->left_child == 0){
+        V->left_child = new Node(x);
+      }else{
+        V->left_child = insert(x, V->left_child);
+      }
+    }else if(x > V->data){
+      if(V->right_child == 0){
+        V->right_child = new Node(x);
+      }else{
+        V -> right_child = insert(x, V->right_child);
+      }
+    }else {
+      return V;
+    }
+
+    V = skew(V);
+    V = split(V);
+    return V;
+  }
+
+  Node* AATree::predecessor(Node * current){
+
+    current = current->left_child;
+    while (current->right_child != 0)
+    {
+      current = current->right_child;
+    }
+    return current;
+  }
+  
+  Node* AATree::successor(Node * current){
+
+    current = current->right_child;
+    while (current->left_child != 0)
+    {
+      current = current->left_child;
+    }
+    return current;
+  }
+
+  Node* AATree::decreaselvl(Node* t){
+
+    int s;
+    if (t->left_child != 0 && t->right_child != 0){
+
+      if(t->left_child->lvl > t->right_child->lvl){
+        s = t->right_child->lvl;
+      }else{
+        s = t->left_child->lvl;
+      }
+      if (s < t->lvl)
+      {
+        t->lvl = s;
+        if (t->right_child != 0 && s < t->right_child->lvl)
+        {
+          t->right_child->lvl = s;
+        }
+      }
+    }
+
+    return t;
+  }
+
+
+  Node* AATree::removeData(Node * t, int x){
+    Node * m;
+    if (isEmpty(t))
+      return 0;
+    if (x < t->data){
+      t->left_child = removeData(t->left_child, x);
+    }else if (x > t->data){
+      t->right_child = removeData(t->right_child, x);
+    }else {
+      if (t->left_child == 0 && t->right_child == 0){
+        return 0;
+      }
+      if (t->left_child == 0){
+
+        Node* l;
+        l = successor(t);
+        t->data = l->data;
+        t->right_child = removeData(t->right_child, l->data);
+      }else {
+        Node * l;
+        l = predecessor(t);
+        t->data = l->data;
+        t->left_child = removeData(t->left_child, l->data);
+      }
+    }
+    t = decreaselvl(t);
+    t = skew(t);
+    if(t->right_child != 0){
+      m = t->right_child;
+      t->right_child = skew(m);
+      if (!isEmpty(m) && m->right_child != 0){
+        t->right_child->right_child = skew(m->right_child);
+      }
+      t = split(t);
+    }
+
+    return t;
+  }
+
+  void AATree::removeData(int x){
+    if(research(root, x)){
+      root = removeData(root, x);
+      return;
+    }
+
+  }
+};
