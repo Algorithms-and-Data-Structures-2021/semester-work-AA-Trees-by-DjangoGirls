@@ -4,64 +4,69 @@
 #include <string_view>  // string_view
 #include <chrono>       // high_resolution_clock, duration_cast, nanoseconds
 #include <sstream>      // stringstream
-
-// подключаем вашу структуру данных
+#include <vector>
 #include "data_structure.hpp"
 
 using namespace std;
 using namespace itis;
 
-// абсолютный путь до набора данных и папки проекта
-static constexpr auto kDatasetPath = string_view{PROJECT_DATASET_DIR};
-static constexpr auto kProjectPath = string_view{PROJECT_SOURCE_DIR};
+const string absolutePathToInputFile = "C:/Users/PC/CLionProjects/semester-work-AA-Trees-by-DjangoGirls/dataset/data";
+const string Operations[] = {"insert", "search", "remove"};
+const string Amount[] = {"100", "500", "1000", "5000", "10000", "25000", "50000", "100000", "250000", "500000",
+                         "750000", "1000000", "2500000", "5000000"};
+ofstream result(absolutePathToInputFile + "/result.txt");
 
-int main(int argc, char **argv) {
+bool testing() {
+  auto Tree = AATree();
+  Tree.insert(22);
+  if (!(Tree.search(22))) {return false;}
+  Tree.removeData(22);
+  return (!(Tree.search(22)));
+}
 
-  // Tip 1: входные аргументы позволяют более гибко контролировать параметры вашей программы
+int main() {
 
-  // Можете передать путь до входного/выходного файла в качестве аргумента,
-  // т.е. не обязательно использовать kDatasetPath и прочие константы
-
-  for (int index = 0; index < argc; index++) {
-    cout << "Arg: " << argv[index] << '\n';
+  if (!(testing())) {
+    cout << "Testing failed" << endl;
+    return 0;
   }
 
-  // Tip 2: для перевода строки в число можете использовать функцию stoi (string to integer)
+  for (const auto& amount : Amount) {
+    result << "\t" << amount << endl;
+    auto Tree = AATree();
+    for (const string& operation : Operations) {
+      auto path = (absolutePathToInputFile + "/" + operation + "/data(" + amount + ").txt");
+      result << operation << "\t";
 
-  // можете использовать функционал класса stringstream для обработки строки
-  auto ss = stringstream("0 1 2");  // передаете строку (входной аргумент или строку из файла) и обрабатываете ее
+      ifstream file(path);
+      string s;
+      vector<int> intValues;
 
-  int number = 0;
-  ss >> number;  // number = 0
-  ss >> number;  // number = 1
-  ss >> number;  // number = 2
+      for (file >> s; !file.eof(); file >> s) {
+        intValues.push_back(stoi(s));
+      }
 
-  // работа с набором данных
-  const auto path = string(kDatasetPath);
-  cout << "Path to the 'dataset/' folder: " << path << endl;
+      const auto time_point_before = chrono::high_resolution_clock::now();
 
-  auto input_file = ifstream(path + "/dataset-example.csv");
+      for (int value : intValues) {
+        if (operation == "insert") {
+          Tree.insert(value);
+        }
+        if (operation == "search") {
+          Tree.search(value);
+        }
+        else {
+          Tree.removeData(value);
+        }
+      }
+      const auto time_point_after = chrono::high_resolution_clock::now();
 
-  if (input_file) {
-    // чтение и обработка набора данных ...
+      // переводим время в наносекунды
+      const auto time_diff = time_point_after - time_point_before;
+      const long time_elapsed_ns = chrono::duration_cast<chrono::nanoseconds>(time_diff).count();
+
+      result << "Time elapsed (ns): " << time_elapsed_ns << endl;
+    }
   }
-
-  // Контрольный тест: операции добавления, удаления, поиска и пр. над структурой данных
-
-  // Tip 3: время работы программы (или участка кода) можно осуществить
-  // как изнутри программы (std::chrono), так и сторонними утилитами
-
-  const auto time_point_before = chrono::high_resolution_clock::now();
-
-  // здесь находится участок кода, время которого необходимо замерить
-
-  const auto time_point_after = chrono::high_resolution_clock::now();
-
-  // переводим время в наносекунды
-  const auto time_diff = time_point_after - time_point_before;
-  const long time_elapsed_ns = chrono::duration_cast<chrono::nanoseconds>(time_diff).count();
-
-  cout << "Time elapsed (ns): " << time_elapsed_ns << '\n';
-
   return 0;
 }
