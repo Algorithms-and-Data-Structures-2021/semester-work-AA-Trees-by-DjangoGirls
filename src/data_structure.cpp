@@ -92,11 +92,19 @@ namespace itis
 
   void AATree::insert(int x)
   {
-    if(!research(root, x))
+
+    if (root == nullptr)
+    {
+
+      root = new Node(x);
+      return;
+    }
+    else if(!research(root, x))
     {
       root = insert(x, root);
       return;
     }
+
   }
 
   Node* AATree::insert(int x, Node * V){
@@ -104,6 +112,7 @@ namespace itis
     {
       V = new Node(x);
     }
+
     else if(x < V->data){
       if(V->left_child == 0){
         V->left_child = new Node(x);

@@ -1,0 +1,21 @@
+	100
+insert	Time elapsed (ns): 0
+search	Time elapsed (ns): 0
+remove	Time elapsed (ns): 0
+	500
+insert	Time elapsed (ns): 0
+search	Time elapsed (ns): 0
+remove	Time elapsed (ns): 0
+	1000
+insert	Time elapsed (ns): 0
+search	Time elapsed (ns): 0
+remove	Time elapsed (ns): 0
+	5000
+insert	Time elapsed (ns): 7559800
+search	Time elapsed (ns): 0
+remove	Time elapsed (ns): 0
+	10000
+insert	Time elapsed (ns): 0
+search	Time elapsed (ns): 0
+remove	Time elapsed (ns): 0
+	25000
