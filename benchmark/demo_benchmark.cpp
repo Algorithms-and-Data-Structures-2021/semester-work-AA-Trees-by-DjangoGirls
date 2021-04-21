@@ -66,7 +66,7 @@ int main() {
            Tree.insert(value);
       }
 
-      const auto time_point_before = chrono::high_resolution_clock::now();
+      const auto time_point_before = chrono::steady_clock::now();
       if (operation == "insert") {
         insert_ar(intValues);
       } else
@@ -77,7 +77,7 @@ int main() {
         for (int value : intValues)
           Tree.removeData(value);
       }
-      const auto time_point_after = chrono::high_resolution_clock::now();
+      const auto time_point_after = chrono::steady_clock::now();
       // переводим время в наносекунды
       const auto time_diff = time_point_after - time_point_before;
       const long long time_elapsed_ns = chrono::duration_cast<chrono::nanoseconds>(time_diff).count();
