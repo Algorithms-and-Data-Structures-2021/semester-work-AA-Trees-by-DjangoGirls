@@ -23,6 +23,7 @@ namespace itis
     Node *decreaselvl(Node* t);
     Node *successor(Node * current);
     Node *predecessor(Node * current);
+    Node *remove(Node* root_pointer, int x);
     ~AATree();
   };
 

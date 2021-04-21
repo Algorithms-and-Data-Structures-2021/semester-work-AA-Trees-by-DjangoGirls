@@ -1,0 +1,42 @@
+	insert
+100	Time elapsed (ns): 0
+500	Time elapsed (ns): 0
+1000	Time elapsed (ns): 0
+5000	Time elapsed (ns): 2008100
+10000	Time elapsed (ns): 5005700
+50000	Time elapsed (ns): 21002700
+100000	Time elapsed (ns): 37509800
+250000	Time elapsed (ns): 61002200
+500000	Time elapsed (ns): 142277700
+750000	Time elapsed (ns): 162247200
+1000000	Time elapsed (ns): 252247000
+2500000	Time elapsed (ns): 560695200
+5000000	Time elapsed (ns): 866750800
+	search
+100	Time elapsed (ns): 0
+500	Time elapsed (ns): 0
+1000	Time elapsed (ns): 0
+5000	Time elapsed (ns): 0
+10000	Time elapsed (ns): 0
+50000	Time elapsed (ns): 999000
+100000	Time elapsed (ns): 1001900
+250000	Time elapsed (ns): 2505700
+500000	Time elapsed (ns): 6000700
+750000	Time elapsed (ns): 8000500
+1000000	Time elapsed (ns): 10984700
+2500000	Time elapsed (ns): 28116200
+5000000	Time elapsed (ns): 53160700
+	remove
+100	Time elapsed (ns): 0
+500	Time elapsed (ns): 0
+1000	Time elapsed (ns): 0
+5000	Time elapsed (ns): 0
+10000	Time elapsed (ns): 0
+50000	Time elapsed (ns): 1001100
+100000	Time elapsed (ns): 998100
+250000	Time elapsed (ns): 2999000
+500000	Time elapsed (ns): 4998900
+750000	Time elapsed (ns): 8002200
+1000000	Time elapsed (ns): 9995800
+2500000	Time elapsed (ns): 28002400
+5000000	Time elapsed (ns): 83034500

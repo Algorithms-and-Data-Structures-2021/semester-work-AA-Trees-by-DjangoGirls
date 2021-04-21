@@ -1,49 +1,44 @@
 #include <iostream>
 #include "data_structure.hpp"
 
-namespace itis
-{
+namespace itis {
 
-
-  AATree::AATree()
-  {
+  AATree::AATree() {
     this->root = nullptr;
-
   }
 
-  AATree::AATree(Node *tree_root)
-  {
+  AATree::AATree(Node *tree_root) {
     this->root = tree_root;
-
   }
 
-  AATree::~AATree()
-  {
+  AATree::~AATree() {
     this->root = nullptr;
-
   }
 
   bool AATree::research(Node *root_pointer, int x) {
     bool found = false;
+    if (root_pointer == nullptr) {
+      return false;
+    }
     int rval;
-    Node* temp = root_pointer;
-    while(!found){
+    Node *temp = root_pointer;
+    while (!found) {
       rval = temp->data;
-      if(x < rval){
-        if(temp->left_child != 0){
+      if (x < rval) {
+        if (temp->left_child != nullptr) {
           temp = temp->left_child;
-        }else{
+        } else {
           break;
         }
 
-      }else if(x > rval){
-        if(temp->right_child != 0){
+      } else if (x > rval) {
+        if (temp->right_child != nullptr) {
           temp = temp->right_child;
-        }else{
+        } else {
           break;
         }
 
-      }else{
+      } else {
         found = true;
       }
     }
@@ -51,28 +46,25 @@ namespace itis
   }
 
   bool AATree::search(int x) {
-    if(research(root, x)){
-      return true;
-    }
-    return false;
+    return (research(this->root, x));
   }
 
   Node *AATree::skew(Node *x) {
     if (x->left_child == nullptr) {
       return x;
-    }  if (x->left_child->lvl == x->lvl) {
+    }
+    if (x->left_child->lvl == x->lvl) {
       Node *y = x->left_child;
       x->left_child = y->right_child;
       y->right_child = x;
       return y;
     }
     return x;
-
   }
 
   Node *AATree::split(Node *x) {
-    if (((x->left_child == nullptr) and (x->right_child == nullptr))
-        or (x->right_child == nullptr) or (x->right_child->right_child == nullptr)) {
+    if (((x->left_child == nullptr) and (x->right_child == nullptr)) or (x->right_child == nullptr)
+        or (x->right_child->right_child == nullptr)) {
       return x;
     }
     if (x->lvl == x->right_child->right_child->lvl) {
@@ -85,90 +77,61 @@ namespace itis
     return x;
   }
 
-
-  bool isEmpty(Node * n){
+  bool isEmpty(Node *n) {
     return n->data == 0;
   }
 
-  void AATree::insert(int x)
-  {
-
-    if (root == nullptr)
-    {
-
-      root = new Node(x);
-      return;
-    }
-    else if(!research(root, x))
-    {
+  void AATree::insert(int x) {
+    if (!research(root, x)) {
       root = insert(x, root);
       return;
     }
-
   }
 
-  Node* AATree::insert(int x, Node * V){
-    if(isEmpty(V))
-    {
-      V = new Node(x);
+  Node *AATree::insert(int x, Node *V) {
+    if (V == nullptr) {
+      return new Node(x);
+    } else if (x < V->data) {
+      V->left_child = insert(x, V->left_child);
+    } else if (x > V->data) {
+      V->right_child = insert(x, V->right_child);
     }
-
-    else if(x < V->data){
-      if(V->left_child == 0){
-        V->left_child = new Node(x);
-      }else{
-        V->left_child = insert(x, V->left_child);
-      }
-    }else if(x > V->data){
-      if(V->right_child == 0){
-        V->right_child = new Node(x);
-      }else{
-        V -> right_child = insert(x, V->right_child);
-      }
-    }else {
-      return V;
-    }
-
     V = skew(V);
     V = split(V);
     return V;
   }
 
-  Node* AATree::predecessor(Node * current){
+  Node *AATree::predecessor(Node *current) {
 
     current = current->left_child;
-    while (current->right_child != 0)
-    {
+    while (current->right_child != 0) {
       current = current->right_child;
     }
     return current;
   }
-  
-  Node* AATree::successor(Node * current){
+
+  Node *AATree::successor(Node *current) {
 
     current = current->right_child;
-    while (current->left_child != 0)
-    {
+    while (current->left_child != 0) {
       current = current->left_child;
     }
     return current;
   }
 
-  Node* AATree::decreaselvl(Node* t){
+  Node *AATree::decreaselvl(Node *t) {
 
     int s;
-    if (t->left_child != 0 && t->right_child != 0){
+    if (t->left_child != 0 && t->right_child != 0) {
 
-      if(t->left_child->lvl > t->right_child->lvl){
+      if (t->left_child->lvl > t->right_child->lvl) {
         s = t->right_child->lvl;
-      }else{
+      } else {
         s = t->left_child->lvl;
       }
-      if (s < t->lvl)
-      {
+      if (s < t->lvl) {
         t->lvl = s;
-        if (t->right_child != 0 && s < t->right_child->lvl)
-        {
+        if (t->right_child != 0 && s < t->right_child->lvl) {
           t->right_child->lvl = s;
         }
       }
@@ -177,27 +140,26 @@ namespace itis
     return t;
   }
 
-
-  Node* AATree::removeData(Node * t, int x){
-    Node * m;
+  Node *AATree::removeData(Node *t, int x) {
+    Node *m;
     if (isEmpty(t))
       return 0;
-    if (x < t->data){
+    if (x < t->data) {
       t->left_child = removeData(t->left_child, x);
-    }else if (x > t->data){
+    } else if (x > t->data) {
       t->right_child = removeData(t->right_child, x);
-    }else {
-      if (t->left_child == 0 && t->right_child == 0){
+    } else {
+      if (t->left_child == 0 && t->right_child == 0) {
         return 0;
       }
-      if (t->left_child == 0){
+      if (t->left_child == 0) {
 
-        Node* l;
+        Node *l;
         l = successor(t);
         t->data = l->data;
         t->right_child = removeData(t->right_child, l->data);
-      }else {
-        Node * l;
+      } else {
+        Node *l;
         l = predecessor(t);
         t->data = l->data;
         t->left_child = removeData(t->left_child, l->data);
@@ -205,10 +167,10 @@ namespace itis
     }
     t = decreaselvl(t);
     t = skew(t);
-    if(t->right_child != 0){
+    if (t->right_child != 0) {
       m = t->right_child;
       t->right_child = skew(m);
-      if (!isEmpty(m) && m->right_child != 0){
+      if (!isEmpty(m) && m->right_child != 0) {
         t->right_child->right_child = skew(m->right_child);
       }
       t = split(t);
@@ -217,11 +179,10 @@ namespace itis
     return t;
   }
 
-  void AATree::removeData(int x){
-    if(research(root, x)){
+  void AATree::removeData(int x) {
+    if (research(root, x)) {
       root = removeData(root, x);
       return;
     }
-
   }
-};
+}
