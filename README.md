@@ -1,10 +1,6 @@
 # AA Tree
 
-[![CMake](https://github.com/Algorithms-and-Data-Structures-2021/semester-work-AA-Trees-by-DjangoGirls/actions/workflows/cmake.yml/badge.svg?branch=main&event=release)](https://github.com/Algorithms-and-Data-Structures-2021/semester-work-AA-Trees-by-DjangoGirls/actions/workflows/cmake.yml)
-
-**_Измените status badge сверху для отображения статуса сборки вашего проекта._**
-
-`Actions > CMake > ... > Create status badge`
+[![CMake](https://github.com/Algorithms-and-Data-Structures-2021/semester-work-AA-Trees-by-DjangoGirls/actions/workflows/cmake.yml/badge.svg)](https://github.com/Algorithms-and-Data-Structures-2021/semester-work-AA-Trees-by-DjangoGirls/actions/workflows/cmake.yml)
 
 _Краткое описание семестрового проекта. Следует отразить информацию по следующим пунктам:_
 
@@ -15,32 +11,27 @@ _Краткое описание семестрового проекта. Сле
 - _Какова теоретическая сложность операций (поиск за `O(log(n))`, вставка за `O(n^2)` и т.д.)?_
 - _Какая-то другая справочная информация о проекте._
 
-## Команда "название команды"
+## Команда "Ходячие(не на пары)"
 
-_Заполните таблицу с указанием вклада каждого из участников в проект._
 
-**Примечание**. Преподаватель может определить вклад любого из участников команды по истории коммитов.
-
-| Фамилия Имя   | Вклад (%) | Прозвище              |
-| :---          |   ---:    |  ---:                 |
-| Участник №1   | 50        |  _босс_               |
-| Участник №2   | 40        |  _потрошитель памяти_ |
-| Участник №3   | 10        |  _самозванец_         |
+| Фамилия Имя       | Вклад (%) | Должность             |
+| :       ---       |   ---:    |  ---:                 |
+| Cуржиков Ярослав  | 33.(3)    |  Идейный вдохновитель |
+| Яковлев Алмаз     | 33.(3)    |  Душа компании        |
+| Сивачев Никита    | 33.(3)    |  Генеральный аводила  |
 
 **Девиз команды**
-> _Наши цели ясны. Задачи определены. За работу, товарищи!_
+То, что мертво, умереть не может.
 
 ## Структура проекта
-
-_Описание основных частей семестрового проекта._
 
 **Пример**. Проект состоит из следующих частей:
 
 - [`src`](src)/[`include`](include) - реализация структуры данных (исходный код и заголовочные файлы);
 - [`benchmark`](benchmark) - контрольные тесты производительности структуры данных (операции добавления, удаления,
-  поиска и пр.);
+  поиска);
 - [`examples`](examples) - примеры работы со структурой данных;
-- [`dataset`](dataset) - наборы данных для запуска контрольных тестов и их генерация;
+- [`dataset`](dataset)/['data'](data) - наборы данных для запуска контрольных тестов, их генерация и результаты выполнения;
 
 ## Требования (Prerequisites)
 
@@ -64,8 +55,6 @@ _Постарайтесь написать инструкцию так, чтоб
 
 #### Сборка проекта
 
-_Опишите процесс сборки проекта._
-
 Склонируйте проект к себе на устройство через [Git for Windows](https://gitforwindows.org/) (либо используйте
 возможности IDE):
 
@@ -88,59 +77,22 @@ cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo && cmake --config RelWithDebInfo --bu
 
 #### Генерация тестовых данных
 
-_Опишите формат хранения (JSON, XML, CSV, YAML и т.д.) и процесс генерации тестовых данных._
-
-_Разрешается использовать собственный формат хранения данных._
 
 Генерация тестового набора данных в
-формате [comma-seperated values (CSV)](https://en.wikipedia.org/wiki/Comma-separated_values):
+формате TXT.
 
 ```shell
 # переход в папку генерации набора данных
 cd dataset
 
 # запуск Python-скрипта
-python generate_csv_bench_dataset.py --samples 1000 <output> [args ...]
-```
+python generator_v2.py
 
-- `--samples` - количество генерируемых элементов;
-- `<output>` - выходной файл и т.д.
 
-Тестовые данные представлены в CSV формате (см.
-[`dataset/data/dataset-example.csv`](dataset/data/dataset-example.csv)):
-
-```csv
-id, full_name
-0, "Ramil Safin"
-1, "Bulat Abbyasov"
-...
-```
-
-**Примечание**. Для удобства запуска контрольных тестов рекомендуется организовывать данные в директориях, например:
-
-```shell
-dataset/data/
-  add/
-    01/
-      100.csv
-      ...
-      5000000.csv
-    02/ ...
-    03/ ...
-    ...
-    10/ ...
-  search/
-    01/
-      100.csv
-      ...
-      5000000.csv
-    ...
-    10/ ...
-  ...
 ```
 
 По названию директории `/dataset/data/add` можно понять, что здесь хранятся наборы данных для контрольных тестов по
-**добавлению** элементов в структуру данных. Названия файлов `100.csv`. `5000000.csv` и т.д. хранят информацию о размере набора данных (т.е. количество элементов). 
+**добавлению** элементов в структуру данных. Названия файлов `100.txt`. `5000000.txt` и т.д. хранят информацию о размере набора данных (т.е. количество элементов). 
 
 #### Контрольные тесты (benchmarks)
 
@@ -149,41 +101,20 @@ _Опишите, как запустить контрольные тесты, ч
 
 Для запуска контрольных тестов необходимо предварительно сгенерировать или скачать готовый набор тестовых данных.
 
-**Примечание**. Во избежание "захламления" репозитория большим объёмом данных рекомендуется указать ссылку на архив с
-набором данных, который при необходимости можно скачать по ссылке. Наборы данных должны находиться в папке семестровой
-работы на [Google Drive](https://drive.google.com/drive/folders/17-qridbMXFnz3E-6UjOj0WD1H0jWtpz3?usp=sharing).
+Google Drive : https://drive.google.com/drive/u/0/folders/1Ck2lKt4nP6osSQwloiLW9ppLJjRJDN4j
 
 ##### Список контрольных тестов
 
 | Название                  | Описание                                | Метрики         |
 | :---                      | ---                                     | :---            |
-| `random_search_benchmark` | поиск элементов по случайному индексу   | _время_         |
-| `add_benchmark`           | добавление элементов в структуру данных | _время, память_ |
+| `demo_benchmark`          | Добавление, поиск и удаление            | Замер времени
 | ...                       | ...                                     | ...             |
 
-##### Примеры запуска
-
-```shell
-./benchmark <input> <output> --trials 50
-```
-
-- `<input>` - входной файл с набором данных в формате CSV;
-- `<output>` - выходной файл с результатами контрольного теста;
-- `--trials` - количество прогонов на наборе данных и т.д.
-
-Добавление 10000 случайных элементов в структуру данных (повторить операцию 50 раз и вычислить среднее время работы и
-потребляемую память):
-
-```
-./add_benchmark.exe ../dataset/data/add/10000.csv metrics.txt --trials 50
-``` 
-
-где `<input> = ../dataset/data/add/10000.csv` и `<output> = metrics.txt`.
-
-**Примечание**. Файл с метриками не обязателен, можете выводить данные в стандартный поток вывода (т.е. консоль).
 
 ## Источники
 
-_Список использованных при реализации структуры данных источников._
+Викиконспекты : https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiBssq_xpnwAhVok4sKHV0eA0gQFjAAegQIAhAD&url=https%3A%2F%2Fneerc.ifmo.ru%2Fwiki%2Findex.php%3Ftitle%3DAA-%25D0%25B4%25D0%25B5%25D1%2580%25D0%25B5%25D0%25B2%25D0%25BE&usg=AOvVaw2Bx1BlE7DiRw46ecFPH9GG 
 
-_**Это не плагиат, это уважение чужого труда и помощь своим сокурсникам более подробно разобраться в теме.**_
+Habr.com : https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiBssq_xpnwAhVok4sKHV0eA0gQFjABegQIAxAD&url=https%3A%2F%2Fhabr.com%2Fru%2Fpost%2F110212%2F&usg=AOvVaw2bTC95l1THC9Cjffaqp1XD
+
+qaz.wiki : https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiBssq_xpnwAhVok4sKHV0eA0gQFjABegQIAxAD&url=https%3A%2F%2Fhabr.com%2Fru%2Fpost%2F110212%2F&usg=AOvVaw2bTC95l1THC9Cjffaqp1XD
